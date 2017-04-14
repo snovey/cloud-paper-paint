@@ -1,7 +1,9 @@
 (function () {
   'use strict';
   window.PaperRender = class PaperRender {
-    constructor() {}
+    constructor() {
+      this.kv = new Map([['touchstar', 'start'], ['touchmove', 'move'], ['touchend', 'end'], ['mousedown', 'start'], ['mousemove', 'move'], ['mouseup', 'end']]);
+    }
 
     init (canvas) {
       const context = canvas.getContext('2d');

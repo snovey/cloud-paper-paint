@@ -13,7 +13,6 @@
       this.canvas = node;
       const canvas = node;
       this.context = canvas.getContext('2d');
-      let _self = this;
     }
 
     dispatch (di) {
@@ -23,14 +22,12 @@
       this.color = di.pen.color;
       this.factor = Math.min(this.width/di.width, this.height/di.height);
       switch(di.type) {
-        case ('mousedown'):
-        case ('touchstart'):
+        case ('start'):
           this.last = di;
           // console.log(di.type, di.pen.type);
           super.start();
           break;
-        case ('mousemove'):
-        case ('touchmove'):
+        case ('move'):
           this.current = di;
           super.move();
           // console.log(this.last.x, this.last.y);

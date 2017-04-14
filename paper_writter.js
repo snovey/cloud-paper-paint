@@ -85,7 +85,6 @@
       let x, y;
       if (!e) {
         e = {};
-        console.log(e);
         x = 0;
         y = 0;
         e.type = 'clear';
@@ -106,7 +105,7 @@
         width: this.width,
         height: this.height,
         timeStamp: new Date(),
-        type: e.type,
+        type: this.kv.get(e.type) || e.type,
         x: x,
         y: y,
         pen: {

@@ -50,7 +50,6 @@
       el: '#writter',
       height: 600,
       width: 800,
-      url: 'server',
       /**
        * 用户绘制时的回调函数
        * @param {DrawEvent} di
@@ -66,8 +65,7 @@
     let reader = new PaperReader({
       el: '#reader',
       height: 650,
-      width: 300,
-      url: 'server'
+      width: 300
     });
     // 测试环境下绑定画图数据
     function bindSelect(selector, obj, key){
@@ -81,7 +79,7 @@
     function bindButton(selector, obj, key){
         let el = document.querySelectorAll(selector);
         obj[key] = el[0].value;
-        el.forEach(x => x.addEventListener('click', e => {
+        Array.from(el).forEach(x => x.addEventListener('click', e => {
           obj[key] = e.target.value;
         }));
     }
