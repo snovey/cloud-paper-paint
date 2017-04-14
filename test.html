@@ -19,6 +19,8 @@
         <button name="type" value="rect">矩形</button>
         <button name="type" value="ellipse">椭圆</button>
         <button name="type" value="clear">清空</button>
+        <button name="type" value="back">后退</button>
+        <button name="type" value="forward">前进</button>
         <select id="size">
           <option value="1">1</option>
           <option value="2">2</option>
@@ -35,7 +37,7 @@
           <option value="blue">blue</option>
           <option value="cyan">cyan</option>
         </select>
-        <div id="writter"></div>
+        <div id="writer"></div>
       </nav>
     </div>
     <div id="reader">
@@ -43,11 +45,11 @@
   </section>
   <script src="lib.js"></script>
   <script src="paper_render.js"></script>
-  <script src="paper_writter.js"></script>
+  <script src="paper_writer.js"></script>
   <script src="paper_reader.js"></script>
   <script>
-    let writter = new PaperWritter({
-      el: '#writter',
+    let writer = new PaperWriter({
+      el: '#writer',
       height: 600,
       width: 800,
       /**
@@ -85,11 +87,19 @@
     }
 
     document.querySelector('button[value=clear]').onclick = e => {
-      writter.clear();
+      writer.clear();
     }
-    bindButton('button[name=type]' , writter, 'type');
-    bindSelect('#size' , writter, 'size');
-    bindSelect('#color', writter, 'color');
+
+    document.querySelector('button[value=back]').onclick = e => {
+      writer.back();
+    }
+
+    document.querySelector('button[value=forward]').onclick = e => {
+      writer.forward();
+    }
+    bindButton('button[name=type]' , writer, 'type');
+    bindSelect('#size' , writer, 'size');
+    bindSelect('#color', writer, 'color');
   </script>
 </body>
 

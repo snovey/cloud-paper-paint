@@ -3,6 +3,8 @@
   window.PaperRender = class PaperRender {
     constructor() {
       this.kv = new Map([['touchstar', 'start'], ['touchmove', 'move'], ['touchend', 'end'], ['mousedown', 'start'], ['mousemove', 'move'], ['mouseup', 'end']]);
+      this.backs = [];
+      this.forwards = [];
     }
 
     //基类的 start, move, end 是根据信息进行操作
@@ -59,10 +61,25 @@
           this.drawEllipse(this.context, this.corner.x*this.factor, this.corner.y*this.factor, (this.current.x-this.corner.x)*this.factor, (this.current.y-this.corner.y)*this.factor);
           break;
       }
+      this.backs.push(this.context.getImageData(0, 0, this.width, this.height));
+      this.forwards = [];
     }
 
     clear () {
       this.context.clearRect(0, 0, this.width, this.height);
+      this.backs.push(this.context.getImageData(0, 0, this.width, this.height));
+    }
+
+    back () {
+      this.forwards.push(this.backs.pop());
+      this.context.clearRect(0, 0, this.width, this.height);
+      this.context.putImageData(this.backs[this.backs.length-1], 0, 0);
+    }
+
+    forward () {
+      this.backs.push(this.forwards.pop());
+      this.context.clearRect(0, 0, this.width, this.height);
+      this.context.putImageData(this.backs[this.backs.length-1], 0, 0);
     }
 
     writeText (e) {
@@ -72,7 +89,6 @@
       text.style.left = e.clientX+'px';
       text.style.top = e.clientY+'px';
       document.body.appendChild(text);
-      // message.push(current);
     }
 
     fork () {
@@ -93,7 +109,6 @@
 
       duplicate.addEventListener('touchmove', this.move, {passive: false});
       document.addEventListener('touchend', function _self(e) {
-        that.end(e);
         duplicate.removeEventListener('touchmove', that.move, {passive: false});
         document.removeEventListener('touchend', _self, {passive: false});
         document.body.removeChild(duplicate);
@@ -101,7 +116,6 @@
 
       duplicate.addEventListener('mousemove', this.move, {passive: false});
       document.addEventListener('mouseup', function _self(e) {
-        that.end(e);
         duplicate.removeEventListener('mousemove', that.move, {passive: false});
         document.removeEventListener('mouseup', _self, {passive: false});
         document.body.removeChild(duplicate);
@@ -119,15 +133,15 @@
     }
 
     drawEllipse(context, cx, cy, rx, ry) {
-            context.save(); // save state
-            context.beginPath();
+      context.save(); // save state
+      context.beginPath();
 
-            context.translate(cx-rx, cy-ry);
-            context.scale(rx, ry);
-            context.arc(1, 1, 1, 0, 2 * Math.PI, false);
+      context.translate(cx-rx, cy-ry);
+      context.scale(rx, ry);
+      context.arc(1, 1, 1, 0, 2 * Math.PI, false);
 
-            context.restore(); // restore to original state
-            context.stroke();
+      context.restore(); // restore to original state
+      context.stroke();
     }
 
   };

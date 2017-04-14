@@ -24,17 +24,25 @@
       switch(di.type) {
         case ('start'):
           this.last = di;
-          // console.log(di.type, di.pen.type);
           super.start();
           break;
         case ('move'):
           this.current = di;
           super.move();
-          // console.log(this.last.x, this.last.y);
           this.last = this.current;
+          break;
+        case ('end'):
+          this.current = di;
+          super.end();
           break;
         case ('clear'):
           super.clear();
+          break;
+        case ('back'):
+          super.back();
+          break;
+        case ('forward'):
+          super.forward();
           break;
       }
     }

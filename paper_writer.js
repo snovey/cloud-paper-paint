@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  window.PaperWritter = class PaperWritter extends PaperRender {
+  window.PaperWriter = class PaperWriter extends PaperRender {
     constructor(obj) {
       super();
       this.width  = obj.width;
@@ -11,32 +11,29 @@
       node.height = this.height;
       document.querySelector(obj.el).appendChild(node);
       this.canvas = node;
-      this.type = 'pen'; //笔型
-      this.size = parseInt(size.value); //笔的粗细
-      this.color = color.value;
+      this.type = obj.type || 'pen'; //笔型
+      this.size = obj.size || 1; //笔的粗细
+      this.color = obj.color || 'black';
       this.factor = 1;
       this.init();
     }
 
-    //writter 类的 start, move, end 是根据事件处理信息，然后调用基类的方法
+    //writer 类的 start, move, end 是根据事件处理信息，然后调用基类的方法
 
     init () {
-      let current, last; //记录上一次与本次事件的坐标
-      let corner; //记录矩形起点
-      let duplicate, layer; //第二个图层
 
       this.move = (e, last) => {
         e.preventDefault();
         this.current = this.getInfo(e);
-        this.callback(this.current);
         super.move();
+        this.callback(this.current);
       };
 
       this.end = (e, last) => {
         e.preventDefault();
         this.current = this.getInfo(e, last);
-        this.callback(this.current);
         super.end();
+        this.callback(this.current);
       };
 
       this.clear = () => {
@@ -48,11 +45,28 @@
         this.type = 'pen';
       }
 
+      this.back = () => {
+        super.back();
+        this.current = this.getInfo({
+          type: 'back'
+        });
+        this.callback(this.current);
+      }
+
+      this.forward = () => {
+        super.forward();
+        this.current = this.getInfo({
+          type: 'forward'
+        });
+        this.callback(this.current);
+      }
+
       this.bindCanvas();
     }
 
     bindCanvas () {
       this.context = this.canvas.getContext('2d');
+      this.context.save();
 
       this.canvas.addEventListener('touchstart', e => {
         let that = this;
