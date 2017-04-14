@@ -41,7 +41,9 @@
 
       this.clear = () => {
         super.clear();
-        this.current = this.getInfo();
+        this.current = this.getInfo({
+          type: 'clear'
+        });
         this.callback(this.current);
         this.type = 'pen';
       }
@@ -83,12 +85,7 @@
 
     getInfo (e, last) {
       let x, y;
-      if (!e) {
-        e = {};
-        x = 0;
-        y = 0;
-        e.type = 'clear';
-      } else if (e.type === 'touchend') { //touchend 和 mouseup 这两个事件比较奇葩，需要特殊处理
+      if (e.type === 'touchend') { //touchend 和 mouseup 这两个事件比较奇葩，需要特殊处理
         x = this.last.x;
         y = this.last.y;
       } else if (e.type === 'mouseup') { //mouseup 有 x, y 坐标，不过先偷懒一下
@@ -97,7 +94,7 @@
       } else if (e.type.substring(0, 5) === 'touch') {
         x = e.touches[0].clientX - e.currentTarget.getBoundingClientRect().left;
         y = e.touches[0].clientY - e.currentTarget.getBoundingClientRect().top;
-      } else { //包含 mouse 事件与 click 事件
+      } else if (e.type.substring(0, 5) === 'mouse' || e.type === 'click'){ //包含 mouse 事件与 click 事件
         x = e.clientX - e.currentTarget.getBoundingClientRect().left;
         y = e.clientY - e.currentTarget.getBoundingClientRect().top;
       }

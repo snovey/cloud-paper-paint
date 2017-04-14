@@ -5,12 +5,6 @@
       this.kv = new Map([['touchstar', 'start'], ['touchmove', 'move'], ['touchend', 'end'], ['mousedown', 'start'], ['mousemove', 'move'], ['mouseup', 'end']]);
     }
 
-    init (canvas) {
-      const context = canvas.getContext('2d');
-      let current, last; //记录上一次与本次事件的坐标
-      let corner; //记录矩形起点
-    }
-
     //基类的 start, move, end 是根据信息进行操作
 
     start () {
@@ -124,17 +118,16 @@
       context.closePath();
     }
 
-    drawEllipse(context, x, y, a, b) {
-      context.save();
-      var r = (a > b) ? a : b;
-      var ratioX = a / r;
-      var ratioY = b / r;
-      context.scale(ratioX, ratioY);
-      context.beginPath();
-      context.arc(x / ratioX, y / ratioY, r, 0, 2 * Math.PI, false);
-      context.closePath();
-      context.restore();
-      context.stroke();
+    drawEllipse(context, cx, cy, rx, ry) {
+            context.save(); // save state
+            context.beginPath();
+
+            context.translate(cx-rx, cy-ry);
+            context.scale(rx, ry);
+            context.arc(1, 1, 1, 0, 2 * Math.PI, false);
+
+            context.restore(); // restore to original state
+            context.stroke();
     }
 
   };
