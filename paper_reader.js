@@ -9,7 +9,7 @@
       let node = document.createElement('canvas');
       node.width = this.width;
       node.height = this.height;
-      document.querySelector(obj.el).appendChild(node);
+      typeof obj.el === 'string' ? document.querySelector(obj.el).appendChild(node) : obj.el.appendChild(node);
       this.canvas = node;
       const canvas = node;
       this.context = canvas.getContext('2d');

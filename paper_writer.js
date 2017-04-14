@@ -9,7 +9,7 @@
       let node = document.createElement('canvas');
       node.width = this.width;
       node.height = this.height;
-      document.querySelector(obj.el).appendChild(node);
+      typeof obj.el === 'string' ? document.querySelector(obj.el).appendChild(node) : obj.el.appendChild(node);
       this.canvas = node;
       this.type = obj.type || 'pen'; //笔型
       this.size = obj.size || 1; //笔的粗细
